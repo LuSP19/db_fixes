@@ -53,7 +53,7 @@ def create_commendation(schoolkid, subject):
         raise RuntimeError('Lessons query set is empty')
 
 
-def fix_all(name, subject=None):
+def fix_all(name, subject):
     try:
         schoolkid = get_schoolkid(name)
         fix_marks(schoolkid)
