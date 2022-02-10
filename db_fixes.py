@@ -1,7 +1,5 @@
 import random
 
-from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
-
 from datacenter.models import (
     Schoolkid,
     Lesson,
@@ -49,18 +47,18 @@ def create_commendation(schoolkid, subject):
             teacher=lesson.teacher,
         )
     else:
-        raise RuntimeError('Lessons query set is empty')
+        raise Lesson.DoesNotExist()
 
 
-def fix_all(name, subject):
+def fix_all(name, subject=None):
     try:
         schoolkid = get_schoolkid(name)
         fix_marks(schoolkid)
         remove_chastisements(schoolkid)
         create_commendation(schoolkid, subject)
-    except (ObjectDoesNotExist, MultipleObjectsReturned):
+    except (Schoolkid.DoesNotExist, Schoolkid.MultipleObjectsReturned):
         print('Введите корректные фамилию и имя')
     except FileNotFoundError:
         print('Файл commendations.txt не найден')
-    except RuntimeError:
+    except Lesson.DoesNotExist:
         print('Введите корректное название предмета')
