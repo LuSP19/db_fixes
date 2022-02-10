@@ -35,13 +35,12 @@ def remove_chastisements(schoolkid):
 
 def create_commendation(schoolkid, subject):
     commendation_variants = get_commendation_variants()
-    lessons = Lesson.objects.filter(
+    lesson = Lesson.objects.filter(
         year_of_study=schoolkid.year_of_study,
         group_letter=schoolkid.group_letter,
         subject__title=subject,
-    )
-    if lessons:
-        lesson = random.choice(lessons)
+    ).order_by('-date').first()
+    if lesson:
         Commendation.objects.create(
             text=random.choice(commendation_variants),
             created=lesson.date,
